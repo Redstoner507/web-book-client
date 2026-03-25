@@ -4,7 +4,10 @@ export default function Root() {
     return (
         <>
             <header>
-                <ul></ul>
+                <ul>
+                    <li><NavLink to="/author"> Auteurs</NavLink></li>
+                    <li><NavLink to="/book"> Livre</NavLink></li>
+                </ul>
             </header>
             <main>
                 <Outlet />
