@@ -5,15 +5,22 @@ export default function Root() {
         <>
             <header>
                 <ul>
-                    <li><NavLink to="/author"> Auteurs</NavLink></li>
-                    <li><NavLink to="/book"> Livre</NavLink></li>
+                    <li>
+                        <NavLink to="/author"> Auteurs</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/book"> Livre</NavLink>
+                    </li>
                 </ul>
             </header>
             <main>
                 <Outlet />
             </main>
             <footer>
-                <em>Made with React & React Router</em>
+                <em>
+                    Made with React & React Router by Valentin Zou and Yann
+                    Stoll-Geyer
+                </em>
             </footer>
         </>
     );
