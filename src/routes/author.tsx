@@ -10,7 +10,7 @@ export function Author() {
 
     useEffect(() => {
         loadAuthor();
-    }, []);
+    }, [params]);
 
     async function loadAuthor() {
         try {

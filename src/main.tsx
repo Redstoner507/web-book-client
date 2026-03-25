@@ -19,6 +19,7 @@ createRoot(document.getElementById("root")!).render(
 
                     <Route path=":author_id" element={<Author />} />
                 </Route>
+
             </Route>
         </Routes>
     </BrowserRouter>,
