@@ -5,6 +5,7 @@ import { add_author, get_authors, remove_author } from "../api";
 
 export function Authors() {
     const [authors, setAuthors] = useState<Author[]>([]);
+    const [errorMsg, setErrorMsg] = useState("");
 
     useEffect(() => {
         loadAuthors();
@@ -21,13 +22,23 @@ export function Authors() {
     }
 
     async function addAuthor(authorData: AuthorCreationData) {
-        await add_author(authorData);
-        loadAuthors();
+        try {
+            await add_author(authorData);
+            loadAuthors();
+            setErrorMsg("");
+        } catch (error) {
+            setErrorMsg(String(error));
+        }
     }
 
     async function removeAuthor(authorId: number) {
-        await remove_author(authorId);
-        loadAuthors();
+        try {
+            await remove_author(authorId);
+            loadAuthors();
+            setErrorMsg("");
+        } catch (error) {
+            setErrorMsg(String(error));
+        }
     }
 
     const handleAdd: SubmitEventHandler<HTMLFormElement> = (event) => {
@@ -68,6 +79,7 @@ export function Authors() {
                     <input type="text" id="lastname" name="lastname" />
                     <button>Add</button>
                 </form>
+                {errorMsg && <p>{errorMsg}</p>}
                 <ul>
                     {authors.map((author) => {
                         return (
