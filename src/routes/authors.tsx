@@ -1,5 +1,5 @@
 
-import { Outlet, NavLink } from "react-router";
+import { Outlet, NavLink, useNavigate } from "react-router";
 import { type Author, type AuthorCreationData } from "../types";
 import { useEffect, useState, type SubmitEventHandler } from "react";
 import { add_author, get_authors, remove_author, get_author } from "../api";
@@ -7,14 +7,18 @@ import { add_author, get_authors, remove_author, get_author } from "../api";
 export function Authors() {
     const [authors, setAuthors] = useState<Author[]>([]);
     const [errorMsg, setErrorMsg] = useState("");
+    const [valueFilter, setValueFilter] = useState<String>();
+    const navigate = useNavigate();
 
     useEffect(() => {
         loadAuthors();
-    }, []);
+    }, [valueFilter]);
+
+    
 
     async function loadAuthors() {
         try {
-            const data = await get_authors();
+            const data = await get_authors(valueFilter);
             setAuthors(data);
         } catch (error) {
             console.error("Failed to load authors:", error);
@@ -70,6 +74,19 @@ export function Authors() {
         removeAuthor(id);
     };
 
+    const handleFilter: SubmitEventHandler<HTMLFormElement>=(event)=>{
+        
+        // empèche le comportement par défaut du navigateur
+        event.preventDefault();
+        // récupération des données du formulaire
+        const form = event.currentTarget;
+        const searchFilter = form.elements.namedItem("lastname") as HTMLInputElement;
+        // mise à jour du state
+        setValueFilter(searchFilter.value);
+        // re-demander à l'utilisateur de séléctionner un auteur
+        navigate('/author');
+    };
+
     return (
         <>
             <div id="sidebar">
@@ -81,6 +98,18 @@ export function Authors() {
                     <button>Add</button>
                 </form>
                 {errorMsg && <p>{errorMsg}</p>}
+
+                <hr />
+
+                <form onSubmit={handleFilter}>
+                    <label htmlFor="lastname">Lastname</label>
+                    <input type="text" id="lastname" name="lastname" />
+                    
+                    <button>Filtrer</button>
+                </form>
+
+                <hr />
+
                 <ul>
                     {authors.map((author) => {
                         return (

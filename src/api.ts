@@ -2,8 +2,11 @@ import type { Author, AuthorCreationData } from "./types";
 
 const apiBasename = "http://localhost:3000"; // Source le l'API
 
-export async function get_authors() {
-    const res = await fetch(`${apiBasename}/authors`);
+export async function get_authors(lastnam?:String) {
+    let res = await fetch(`${apiBasename}/authors`);
+    if(lastnam){
+        res = await fetch(`${apiBasename}/authors?lastname=${lastnam}`);
+    }
     if (!res.ok) {
         const msg = await res.text();
         throw new Error(msg);
