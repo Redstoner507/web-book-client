@@ -1,7 +1,7 @@
 import { useEffect, useState, type SubmitEventHandler } from "react";
 import { NavLink, Outlet } from "react-router";
 import { Pagination } from "../utils/pagination";
-import { Loading } from "../utils/loading";
+//import { Loading } from "../utils/loading";
 import type { Book, GetBooksParams } from "../types";
 import { get_books } from "../api";
 
@@ -59,33 +59,26 @@ export function Books() {
                     <button>Filtrer</button>
                 </form>
                 <hr />
-                {!loading ? (
-                    <>
-                        <Pagination
-                            page={currentPage}
-                            pageSize={pageSize}
-                            total={totalElement}
-                            onPageChange={handlePageChange}
-                        />
 
-                        <ul>
-                            {books.map((books) => {
-                                return (
-                                    <li key={books.id}>
-                                        <NavLink to={books.id.toString()}>
-                                            {books.title}
-                                        </NavLink>
-                                        <button className="small danger">
-                                            Delete
-                                        </button>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </>
-                ) : (
-                    <Loading />
-                )}
+                <Pagination
+                    page={currentPage}
+                    pageSize={pageSize}
+                    total={totalElement}
+                    onPageChange={handlePageChange}
+                />
+
+                <ul style={{ opacity: loading ? "0.5" : "1" }}>
+                    {books.map((books) => {
+                        return (
+                            <li key={books.id}>
+                                <NavLink to={books.id.toString()}>
+                                    {books.title}
+                                </NavLink>
+                                <button className="small danger">Delete</button>
+                            </li>
+                        );
+                    })}
+                </ul>
             </div>
             <div id="info">
                 <Outlet />

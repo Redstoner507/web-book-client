@@ -37,7 +37,7 @@ export async function get_authors(
     return { totalCount, authors };
 }
 
-export async function get_author(id_author: string) {
+export async function get_author(id_author: number) {
     const res = await fetch(`${apiBasename}/authors/${id_author}`);
     if (!res.ok) {
         const msg = await res.text();
@@ -98,7 +98,7 @@ export async function get_books(title?: string, params?: GetBooksParams) {
     return { totalCount, books };
 }
 
-export async function get_book(id_book: string) {
+export async function get_book(id_book: number) {
     const res = await fetch(`${apiBasename}/books/${id_book}`);
     if (!res.ok) {
         const msg = await res.text();

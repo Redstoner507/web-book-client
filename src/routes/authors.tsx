@@ -7,13 +7,14 @@ import {
 import { useEffect, useState, type SubmitEventHandler } from "react";
 import { add_author, get_authors, remove_author } from "../api";
 import { Pagination } from "../utils/pagination";
-import { Loading } from "../utils/loading";
+//import { Loading } from "../utils/loading";
 
 export function Authors() {
     const [authors, setAuthors] = useState<Author[]>([]);
     const [errorMsg, setErrorMsg] = useState("");
     const [valueFilter, setValueFilter] = useState<string>("");
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [adding, setAdding] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalElement, setTotalElement] = useState(0);
     const pageSize = 10;
@@ -39,13 +40,10 @@ export function Authors() {
     }
 
     async function addAuthor(authorData: AuthorCreationData) {
-        try {
-            await add_author(authorData);
-            loadAuthors({ page: currentPage, pageSize });
-            setErrorMsg("");
-        } catch (error) {
-            setErrorMsg(String(error));
-        }
+        setAdding(true);
+        await add_author(authorData);
+        loadAuthors({ page: currentPage, pageSize });
+        setAdding(false);
     }
 
     async function removeAuthor(authorId: number) {
@@ -58,7 +56,7 @@ export function Authors() {
         }
     }
 
-    const handleAdd: SubmitEventHandler<HTMLFormElement> = (event) => {
+    const handleAdd: SubmitEventHandler<HTMLFormElement> = async (event) => {
         event.preventDefault();
 
         const form = event.currentTarget;
@@ -77,9 +75,13 @@ export function Authors() {
             lastname: inputLastname.value,
         };
 
-        addAuthor(newAuthorData);
-        inputFirstname.value = "";
-        inputLastname.value = "";
+        try {
+            await addAuthor(newAuthorData);
+            form.reset();
+            setErrorMsg("");
+        } catch (error) {
+            setErrorMsg(String(error));
+        }
     };
 
     const handleRemove = (id: number) => {
@@ -111,7 +113,9 @@ export function Authors() {
                     <input type="text" id="firstname" name="firstname" />
                     <label htmlFor="lastname">Lastname</label>
                     <input type="text" id="lastname" name="lastname" />
-                    <button>Add</button>
+                    <button disabled={adding}>
+                        {adding ? "Adding..." : "Add"}
+                    </button>
                 </form>
                 {errorMsg && <p>{errorMsg}</p>}
 
@@ -128,39 +132,31 @@ export function Authors() {
                     <button>Filtrer</button>
                 </form>
                 <hr />
-                {!loading ? (
-                    <>
-                        <Pagination
-                            page={currentPage}
-                            pageSize={pageSize}
-                            total={totalElement}
-                            onPageChange={handlePageChange}
-                        />
+                <Pagination
+                    page={currentPage}
+                    pageSize={pageSize}
+                    total={totalElement}
+                    onPageChange={handlePageChange}
+                />
 
-                        <ul>
-                            {authors.map((author) => {
-                                return (
-                                    <li key={author.id}>
-                                        <NavLink to={author.id.toString()}>
-                                            {author.firstname} {author.lastname}
-                                        </NavLink>
+                <ul style={{ opacity: loading ? "0.5" : "1" }}>
+                    {authors.map((author) => {
+                        return (
+                            <li key={author.id}>
+                                <NavLink to={author.id.toString()}>
+                                    {author.firstname} {author.lastname}
+                                </NavLink>
 
-                                        <button
-                                            onClick={() =>
-                                                handleRemove(author.id)
-                                            }
-                                            className="small danger"
-                                        >
-                                            Delete
-                                        </button>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </>
-                ) : (
-                    <Loading />
-                )}
+                                <button
+                                    onClick={() => handleRemove(author.id)}
+                                    className="small danger"
+                                >
+                                    Delete
+                                </button>
+                            </li>
+                        );
+                    })}
+                </ul>
             </div>
             <div id="info">
                 <Outlet />

@@ -4,29 +4,27 @@ import { type Author } from "../types";
 import { get_author } from "../api";
 
 export function Author() {
-    let params = useParams();
+    let { author_id } = useParams();
     const [author, setAuthor] = useState<Author>();
-    //const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         loadAuthor();
-    }, [params]);
+    }, [author_id]);
 
     async function loadAuthor() {
+        setLoading(true);
         try {
-            const id_author = params.author_id;
-            if (!id_author) {
-                return <p>Auteur non trouvé ou ID invalide.</p>;
-            }
-            const data = await get_author(id_author.toString());
+            const data = await get_author(Number(author_id));
             setAuthor(data);
         } catch (error) {
             console.error("Failed to load authors:", error);
         }
+        setLoading(false);
     }
 
     return (
-        <div>
+        <div style={{ opacity: loading ? "0.5" : "1" }}>
             <h2>
                 {author?.firstname} {author?.lastname}
                 <hr />
