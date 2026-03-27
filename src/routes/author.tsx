@@ -3,10 +3,10 @@ import { useParams } from "react-router";
 import { type Author } from "../types";
 import { get_author } from "../api";
 
-
 export function Author() {
     let params = useParams();
     const [author, setAuthor] = useState<Author>();
+    //const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         loadAuthor();
@@ -27,10 +27,10 @@ export function Author() {
 
     return (
         <div>
-            <h2>auteur details</h2>
-            <p>Nom :{author?.lastname}</p>
-            <p>Prénom :{author?.firstname}</p>
+            <h2>
+                {author?.firstname} {author?.lastname}
+                <hr />
+            </h2>
         </div>
-
     );
 }

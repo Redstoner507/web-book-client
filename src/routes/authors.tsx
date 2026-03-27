@@ -7,11 +7,13 @@ import {
 import { useEffect, useState, type SubmitEventHandler } from "react";
 import { add_author, get_authors, remove_author } from "../api";
 import { Pagination } from "../utils/pagination";
+import { Loading } from "../utils/loading";
 
 export function Authors() {
     const [authors, setAuthors] = useState<Author[]>([]);
     const [errorMsg, setErrorMsg] = useState("");
     const [valueFilter, setValueFilter] = useState<string>("");
+    const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalElement, setTotalElement] = useState(0);
     const pageSize = 10;
@@ -23,6 +25,7 @@ export function Authors() {
     }, [valueFilter, currentPage]);
 
     async function loadAuthors(params?: GetAuthorsParams) {
+        setLoading(true);
         try {
             const data = await get_authors(valueFilter, params);
             setAuthors(data.authors);
@@ -32,6 +35,7 @@ export function Authors() {
             setAuthors([]);
             setTotalElement(0);
         }
+        setLoading(false);
     }
 
     async function addAuthor(authorData: AuthorCreationData) {
@@ -112,7 +116,7 @@ export function Authors() {
                 {errorMsg && <p>{errorMsg}</p>}
 
                 <hr />
-
+                <h3>Filters</h3>
                 <form onSubmit={handleFilter}>
                     <label htmlFor="lastnameFilter">Lastname</label>
                     <input
@@ -123,31 +127,40 @@ export function Authors() {
 
                     <button>Filtrer</button>
                 </form>
-
                 <hr />
-                <Pagination
-                    page={currentPage}
-                    pageSize={pageSize}
-                    total={totalElement}
-                    onPageChange={handlePageChange}
-                />
-                <ul>
-                    {authors.map((author) => {
-                        return (
-                            <li key={author.id}>
-                                <NavLink to={author.id.toString()}>
-                                    {author.lastname} {author.firstname}{" "}
-                                </NavLink>
-                                <button
-                                    onClick={() => handleRemove(author.id)}
-                                    className="small danger"
-                                >
-                                    Delete
-                                </button>
-                            </li>
-                        );
-                    })}
-                </ul>
+                {!loading ? (
+                    <>
+                        <Pagination
+                            page={currentPage}
+                            pageSize={pageSize}
+                            total={totalElement}
+                            onPageChange={handlePageChange}
+                        />
+
+                        <ul>
+                            {authors.map((author) => {
+                                return (
+                                    <li key={author.id}>
+                                        <NavLink to={author.id.toString()}>
+                                            {author.firstname} {author.lastname}
+                                        </NavLink>
+
+                                        <button
+                                            onClick={() =>
+                                                handleRemove(author.id)
+                                            }
+                                            className="small danger"
+                                        >
+                                            Delete
+                                        </button>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </>
+                ) : (
+                    <Loading />
+                )}
             </div>
             <div id="info">
                 <Outlet />
