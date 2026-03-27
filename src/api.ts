@@ -3,6 +3,7 @@ import type {
     AuthorCreationData,
     Book,
     GetAuthorsParams,
+    GetBooksParams,
 } from "./types";
 
 const apiBasename = "http://localhost:3000"; // Source le l'API
@@ -71,7 +72,7 @@ export async function remove_author(authorId: number) {
     return;
 }
 
-export async function get_books(title?: string, params?: GetAuthorsParams) {
+export async function get_books(title?: string, params?: GetBooksParams) {
     let url = `${apiBasename}/books`;
     const query = new URLSearchParams();
 

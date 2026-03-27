@@ -25,7 +25,7 @@ export function Books() {
             setBooks(data.books);
             setTotalElement(data.totalCount);
         } catch (error) {
-            console.error("Failed to load authors:", error);
+            console.error("Failed to load books:", error);
             setBooks([]);
             setTotalElement(0);
         }
@@ -38,7 +38,7 @@ export function Books() {
         // récupération des données du formulaire
         const form = event.currentTarget;
         const searchFilter = form.elements.namedItem(
-            "lastname",
+            "titleFilter",
         ) as HTMLInputElement;
         setValueFilter(searchFilter.value);
         setCurrentPage(1);
@@ -53,12 +53,8 @@ export function Books() {
             <div id="sidebar">
                 <h3>Filters</h3>
                 <form onSubmit={handleFilter}>
-                    <label htmlFor="lastnameFilter">Title</label>
-                    <input
-                        type="text"
-                        id="lastnameFilter"
-                        name="lastnameFilter"
-                    />
+                    <label htmlFor="titleFilter">Title</label>
+                    <input type="text" id="titleFilter" name="titleFilter" />
 
                     <button>Filtrer</button>
                 </form>
