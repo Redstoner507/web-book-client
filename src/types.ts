@@ -22,6 +22,11 @@ export type Book = {
 
 export type BookCreationData = Partial<Omit<Book, "id">>;
 
+export type GetBooksParams = {
+    page?: number;
+    pageSize?: number;
+};
+
 export type Tag = {
     id: number;
     name: string;

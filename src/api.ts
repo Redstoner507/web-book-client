@@ -1,4 +1,9 @@
-import type { Author, AuthorCreationData, GetAuthorsParams } from "./types";
+import type {
+    Author,
+    AuthorCreationData,
+    Book,
+    GetAuthorsParams,
+} from "./types";
 
 const apiBasename = "http://localhost:3000"; // Source le l'API
 
@@ -64,4 +69,30 @@ export async function remove_author(authorId: number) {
         throw new Error(msg);
     }
     return;
+}
+
+export async function get_books(title?: string, params?: GetAuthorsParams) {
+    let url = `${apiBasename}/books`;
+    const query = new URLSearchParams();
+
+    if (title) query.append("title", title);
+    if (params?.page && params?.pageSize) {
+        const skip = (params.page - 1) * params.pageSize;
+        const take = params.pageSize;
+
+        query.append("skip", String(skip));
+        query.append("take", String(take));
+    }
+
+    url += `?${query.toString()}`;
+
+    let res = await fetch(url);
+
+    if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(msg);
+    }
+    const books: Book[] = await res.json();
+    const totalCount = Number(res.headers.get("X-Total-Count"));
+    return { totalCount, books };
 }
