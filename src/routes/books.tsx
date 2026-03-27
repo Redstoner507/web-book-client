@@ -5,7 +5,7 @@ import { Loading } from "../utils/loading";
 import type { Book, GetBooksParams } from "../types";
 import { get_books } from "../api";
 
-export function Book() {
+export function Books() {
     const [books, setBooks] = useState<Book[]>([]);
     //const [errorMsg, setErrorMsg] = useState("");
     const [valueFilter, setValueFilter] = useState<string>("");

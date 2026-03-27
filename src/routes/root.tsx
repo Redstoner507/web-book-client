@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from "react-router";
+import { NavLink, Outlet } from "react-router";
 
 export default function Root() {
     return (
@@ -6,10 +6,10 @@ export default function Root() {
             <header>
                 <ul>
                     <li>
-                        <NavLink to="/author"> Auteurs</NavLink>
+                        <NavLink to="/authors"> Auteurs</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/book"> Livre</NavLink>
+                        <NavLink to="/books"> Livre</NavLink>
                     </li>
                 </ul>
             </header>

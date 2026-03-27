@@ -18,7 +18,7 @@ export function Authors() {
     const [totalElement, setTotalElement] = useState(0);
     const pageSize = 10;
 
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
 
     useEffect(() => {
         loadAuthors({ page: currentPage, pageSize });
@@ -96,7 +96,7 @@ export function Authors() {
         ) as HTMLInputElement;
         setValueFilter(searchFilter.value);
         setCurrentPage(1);
-        navigate("/author");
+        //navigate("/author");
     };
 
     const handlePageChange = (newPage: number) => {

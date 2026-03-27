@@ -96,3 +96,13 @@ export async function get_books(title?: string, params?: GetAuthorsParams) {
     const totalCount = Number(res.headers.get("X-Total-Count"));
     return { totalCount, books };
 }
+
+export async function get_book(id_book: string) {
+    const res = await fetch(`${apiBasename}/books/${id_book}`);
+    if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(msg);
+    }
+    const book: Book = await res.json();
+    return book;
+}
