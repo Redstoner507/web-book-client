@@ -92,7 +92,7 @@ export function Authors() {
         // récupération des données du formulaire
         const form = event.currentTarget;
         const searchFilter = form.elements.namedItem(
-            "lastname",
+            "lastnameFilter",
         ) as HTMLInputElement;
         setValueFilter(searchFilter.value);
         setCurrentPage(1);
