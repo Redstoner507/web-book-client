@@ -7,6 +7,11 @@ export type Author = {
 
 export type AuthorCreationData = Partial<Omit<Author, "id">>;
 
+export type GetAuthorsParams = {
+    page?: number;
+    pageSize?: number;
+};
+
 export type Book = {
     id: number;
     title: string;

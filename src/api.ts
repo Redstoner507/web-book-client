@@ -1,25 +1,40 @@
-import type { Author, AuthorCreationData } from "./types";
+import type { Author, AuthorCreationData, GetAuthorsParams } from "./types";
 
 const apiBasename = "http://localhost:3000"; // Source le l'API
 
-export async function get_authors(lastnam?:String) {
-    let res = await fetch(`${apiBasename}/authors`);
-    if(lastnam){
-        res = await fetch(`${apiBasename}/authors?lastname=${lastnam}`);
+export async function get_authors(
+    lastname?: string,
+    params?: GetAuthorsParams,
+) {
+    let url = `${apiBasename}/authors`;
+    const query = new URLSearchParams();
+
+    if (lastname) query.append("lastname", lastname);
+    if (params?.page && params?.pageSize) {
+        const skip = (params.page - 1) * params.pageSize;
+        const take = params.pageSize;
+
+        query.append("skip", String(skip));
+        query.append("take", String(take));
     }
+
+    url += `?${query.toString()}`;
+
+    let res = await fetch(url);
+
     if (!res.ok) {
         const msg = await res.text();
         throw new Error(msg);
     }
     const authors: Author[] = await res.json();
-    return authors;
+    const totalCount = Number(res.headers.get("X-Total-Count"));
+    return { totalCount, authors };
 }
 
-
-export async function get_author(id_author:String){
+export async function get_author(id_author: string) {
     const res = await fetch(`${apiBasename}/authors/${id_author}`);
-    if(!res.ok){
-        const msg = await res.text()
+    if (!res.ok) {
+        const msg = await res.text();
         throw new Error(msg);
     }
     const author: Author = await res.json();
