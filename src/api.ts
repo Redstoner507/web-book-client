@@ -2,6 +2,7 @@ import type {
     Author,
     AuthorCreationData,
     Book,
+    BookCreationData,
     GetAuthorsParams,
     GetBooksParams,
 } from "./types";
@@ -106,4 +107,41 @@ export async function get_book(id_book: number) {
     }
     const book: Book = await res.json();
     return book;
+}
+
+export async function get_books_of_author(author_id: Number) {
+    console.log(`requête : ${apiBasename}/authors/${author_id}/books`)
+    const res = await fetch(`${apiBasename}/authors/${author_id}/books`);
+    if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(msg);
+    }
+    const books: Book[] = await res.json();
+    return books;
+}
+
+export async function add_book(author_id: Number, bookData: BookCreationData) {
+    const res = await fetch(`${apiBasename}/authors/${author_id}/books`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(bookData)
+    });
+
+    if(!res.ok){
+        const msg = await res.text();
+        throw new Error(msg);
+    }
+}
+
+export async function remove_book(id:number){
+    const res = await fetch(`${apiBasename}/books/${id}`, {
+        method: "DELETE"
+    });
+
+    if(!res.ok){
+        const msg = await res.text();
+        throw new Error(msg);
+    }
 }

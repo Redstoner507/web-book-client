@@ -245,3 +245,7 @@ ul {
 #info ul li button {
     float: right;
 }
+
+span.blue{
+    color: rgb(65, 125, 255);
+}
