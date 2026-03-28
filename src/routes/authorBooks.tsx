@@ -1,7 +1,7 @@
 import { useEffect, useState, type SubmitEventHandler } from "react";
 import { useParams } from "react-router";
 import { type Book, type BookCreationData } from "../types";
-import { get_books_of_author, add_book, remove_book } from "../api";
+import { get_books_of_author, add_book as add_one_book, remove_book as remove_one_book } from "../api";
 
 export function AuthorBooks() {
     let { author_id } = useParams();
@@ -30,7 +30,7 @@ export function AuthorBooks() {
 
     async function addBook(bodyNewBook: BookCreationData) {
         setAdding(true);
-        await add_book(Number(author_id), bodyNewBook);
+        await add_one_book(Number(author_id), bodyNewBook);
         setIsBookAddOrRemove(true);
         setAdding(false);
     }
@@ -60,7 +60,7 @@ export function AuthorBooks() {
 
     const handleRemoveBook = (id: number) => {
         setIsBookAddOrRemove(true);
-        remove_book(id);
+        remove_one_book(id);
     };
 
     return (
@@ -85,14 +85,14 @@ export function AuthorBooks() {
                 {books.map((book) => {
                     return (
                         <li key={book.id}>
-                            {" "}
                             <span className="blue">{book.title}</span>
+                            {/* Changer pour un Link vers le livre */}
                             <button
                                 onClick={() => handleRemoveBook(book.id)}
                                 className="small danger"
                             >
                                 Delete
-                            </button>{" "}
+                            </button>
                         </li>
                     );
                 })}

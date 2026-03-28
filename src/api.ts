@@ -5,6 +5,7 @@ import type {
     BookCreationData,
     GetAuthorsParams,
     GetBooksParams,
+    Tag,
 } from "./types";
 
 const apiBasename = "http://localhost:3000"; // Source le l'API
@@ -110,7 +111,7 @@ export async function get_book(id_book: number) {
 }
 
 export async function get_books_of_author(author_id: Number) {
-    console.log(`requête : ${apiBasename}/authors/${author_id}/books`)
+    console.log(`requête : ${apiBasename}/authors/${author_id}/books`);
     const res = await fetch(`${apiBasename}/authors/${author_id}/books`);
     if (!res.ok) {
         const msg = await res.text();
@@ -124,23 +125,69 @@ export async function add_book(author_id: Number, bookData: BookCreationData) {
     const res = await fetch(`${apiBasename}/authors/${author_id}/books`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(bookData)
+        body: JSON.stringify(bookData),
     });
 
-    if(!res.ok){
+    if (!res.ok) {
         const msg = await res.text();
         throw new Error(msg);
     }
 }
 
-export async function remove_book(id:number){
+export async function remove_book(id: number) {
     const res = await fetch(`${apiBasename}/books/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
     });
 
-    if(!res.ok){
+    if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(msg);
+    }
+}
+
+export async function get_all_tags_of_book(book_id: number) {
+    console.log(`requête : ${apiBasename}/books/${book_id}/tags`);
+    const res = await fetch(`${apiBasename}/books/${book_id}/tags`);
+    if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(msg);
+    }
+    const tags: Tag[] = await res.json();
+    return tags;
+}
+
+export async function delete_one_from_book(book_id: number, tag_id: number) {
+    const res = await fetch(`${apiBasename}/books/${book_id}/tags/${tag_id}`, {
+        method: "DELETE",
+    });
+
+    if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(msg);
+    }
+}
+
+export async function get_tags() {
+    let url = `${apiBasename}/tags`;
+
+    let res = await fetch(url);
+
+    if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(msg);
+    }
+    const tags: Tag[] = await res.json();
+    return tags;
+}
+
+export async function add_tag_to_book(book_id: number, tag_id: number) {
+    const res = await fetch(`${apiBasename}/books/${book_id}/tags/${tag_id}`, {
+        method: "POST",
+    });
+
+    if (!res.ok) {
         const msg = await res.text();
         throw new Error(msg);
     }

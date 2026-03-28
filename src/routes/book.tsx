@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import { type Book } from "../types";
 import { get_book } from "../api";
+import { BooksTags } from "./booksTags";
 
 export function Book() {
     let { book_id } = useParams();
@@ -28,7 +29,11 @@ export function Book() {
             <h2>{book?.title}</h2>
             <hr />
             <p>Publication year: {book?.publication_year}</p>
-            <p>Author:</p>
+            <p>
+                Author: <span className="blue">Author Name</span>
+            </p>
+            {/* Changer pour un Link vers l'auteur */}
+            <BooksTags />
         </div>
     );
 }

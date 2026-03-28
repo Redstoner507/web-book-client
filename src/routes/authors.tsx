@@ -138,7 +138,7 @@ export function Authors() {
                     total={totalElement}
                     onPageChange={handlePageChange}
                 />
-
+                {/* Bloquer la liste si loading*/}
                 <ul style={{ opacity: loading ? "0.5" : "1" }}>
                     {authors.map((author) => {
                         return (
