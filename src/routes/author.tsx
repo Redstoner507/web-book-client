@@ -27,8 +27,8 @@ export function Author() {
         <div style={{ opacity: loading ? "0.5" : "1" }}>
             <h2>
                 {author?.firstname} {author?.lastname}
-                <hr />
             </h2>
+            <hr />
         </div>
     );
 }
