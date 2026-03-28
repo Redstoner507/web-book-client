@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { type Book } from "../types";
 import { get_book } from "../api";
 
@@ -25,10 +25,10 @@ export function Book() {
 
     return (
         <div style={{ opacity: loading ? "0.5" : "1" }}>
-            <h2>
-                {book?.title}
-                <hr />
-            </h2>
+            <h2>{book?.title}</h2>
+            <hr />
+            <p>Publication year: {book?.publication_year}</p>
+            <p>Author:</p>
         </div>
     );
 }

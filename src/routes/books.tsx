@@ -53,7 +53,7 @@ export function Books() {
             <div id="sidebar">
                 <h3>Filters</h3>
                 <form onSubmit={handleFilter}>
-                    <label htmlFor="titleFilter">Title</label>
+                    <label htmlFor="titleFilter">Title </label>
                     <input type="text" id="titleFilter" name="titleFilter" />
 
                     <button>Filtrer</button>
