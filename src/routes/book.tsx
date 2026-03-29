@@ -30,9 +30,9 @@ export function Book() {
             <hr />
             <p>Publication year: {book?.publication_year}</p>
             <p>
-                Author: <span className="blue">Author Name</span>
+                Author:{" "}
+                <Link to={`/authors/${book?.authorId}`}>Nom de l'auteur</Link>
             </p>
-            {/* Changer pour un Link vers l'auteur */}
             <BooksTags />
         </div>
     );

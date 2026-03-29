@@ -3,11 +3,11 @@ import { NavLink, Outlet } from "react-router";
 import { Pagination } from "../utils/pagination";
 //import { Loading } from "../utils/loading";
 import type { Book, GetBooksParams } from "../types";
-import { get_books } from "../api";
+import { get_books, remove_book } from "../api";
 
 export function Books() {
     const [books, setBooks] = useState<Book[]>([]);
-    //const [errorMsg, setErrorMsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
     const [valueFilter, setValueFilter] = useState<string>("");
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
@@ -31,6 +31,20 @@ export function Books() {
         }
         setLoading(false);
     }
+
+    async function removeBook(bookId: number) {
+        try {
+            await remove_book(bookId);
+            loadBooks({ page: currentPage, pageSize });
+            setErrorMsg("");
+        } catch (error) {
+            setErrorMsg(String(error));
+        }
+    }
+
+    const handleRemove = (id: number) => {
+        removeBook(id);
+    };
 
     const handleFilter: SubmitEventHandler<HTMLFormElement> = (event) => {
         // empèche le comportement par défaut du navigateur
@@ -68,13 +82,18 @@ export function Books() {
                 />
 
                 <ul style={{ opacity: loading ? "0.5" : "1" }}>
-                    {books.map((books) => {
+                    {books.map((book) => {
                         return (
-                            <li key={books.id}>
-                                <NavLink to={books.id.toString()}>
-                                    {books.title}
+                            <li key={book.id}>
+                                <NavLink to={book.id.toString()}>
+                                    {book.title}
                                 </NavLink>
-                                <button className="small danger">Delete</button>
+                                <button
+                                    className="small danger"
+                                    onClick={() => handleRemove(book.id)}
+                                >
+                                    Delete
+                                </button>
                             </li>
                         );
                     })}

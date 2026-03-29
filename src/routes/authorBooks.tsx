@@ -1,7 +1,11 @@
 import { useEffect, useState, type SubmitEventHandler } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { type Book, type BookCreationData } from "../types";
-import { get_books_of_author, add_book as add_one_book, remove_book as remove_one_book } from "../api";
+import {
+    get_books_of_author,
+    add_book as add_one_book,
+    remove_book as remove_one_book,
+} from "../api";
 
 export function AuthorBooks() {
     let { author_id } = useParams();
@@ -85,8 +89,7 @@ export function AuthorBooks() {
                 {books.map((book) => {
                     return (
                         <li key={book.id}>
-                            <span className="blue">{book.title}</span>
-                            {/* Changer pour un Link vers le livre */}
+                            <Link to={`/books/${book.id}`}>{book.title}</Link>
                             <button
                                 onClick={() => handleRemoveBook(book.id)}
                                 className="small danger"
