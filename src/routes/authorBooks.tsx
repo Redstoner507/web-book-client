@@ -71,16 +71,14 @@ export function AuthorBooks() {
         <div>
             <h3>Books</h3>
             <form onSubmit={handleAddBook}>
-                <label htmlFor="title">Title</label>
-                <input type="text" name="title" id="title" />
-
-                <label htmlFor="publication_year">publication year</label>
+                <label htmlFor="title">Title </label>
+                <input type="text" name="title" id="title" />{" "}
+                <label htmlFor="publication_year">Publication year </label>
                 <input
                     type="text"
                     name="publication_year"
                     id="publication_year"
                 />
-
                 <button disabled={adding}>
                     {adding ? "Adding..." : "Add"}
                 </button>

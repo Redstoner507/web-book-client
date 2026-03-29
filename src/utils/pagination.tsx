@@ -27,13 +27,16 @@ export function Pagination({
 
     return (
         <div className="pagination">
-            <button onClick={handlePrev} disabled={page === 1}>
+            <button onClick={handlePrev} disabled={page === 1 || total === 0}>
                 {"<"}
             </button>
             <span>
-                Page {page} / {totalPages}
+                Page {total === 0 ? 0 : page} / {totalPages}
             </span>
-            <button onClick={handleNext} disabled={page === totalPages}>
+            <button
+                onClick={handleNext}
+                disabled={page === totalPages || total === 0}
+            >
                 {">"}
             </button>
         </div>

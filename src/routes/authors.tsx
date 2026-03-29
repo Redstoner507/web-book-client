@@ -43,13 +43,21 @@ export function Authors() {
         setAdding(true);
         await add_author(authorData);
         loadAuthors({ page: currentPage, pageSize });
+        //const lastPage = Math.ceil(totalElement / pageSize);
+        //handlePageChange(lastPage);
         setAdding(false);
     }
 
     async function removeAuthor(authorId: number) {
         try {
             await remove_author(authorId);
-            loadAuthors({ page: currentPage, pageSize });
+            const isLastItemOnPage = authors.length === 1;
+            const newPage =
+                isLastItemOnPage && currentPage > 1
+                    ? currentPage - 1
+                    : currentPage;
+            handlePageChange(newPage);
+            loadAuthors({ page: newPage, pageSize });
             setErrorMsg("");
         } catch (error) {
             setErrorMsg(String(error));

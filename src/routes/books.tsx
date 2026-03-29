@@ -35,7 +35,13 @@ export function Books() {
     async function removeBook(bookId: number) {
         try {
             await remove_book(bookId);
-            loadBooks({ page: currentPage, pageSize });
+            const isLastItemOnPage = books.length === 1;
+            const newPage =
+                isLastItemOnPage && currentPage > 1
+                    ? currentPage - 1
+                    : currentPage;
+            handlePageChange(newPage);
+            loadBooks({ page: newPage, pageSize });
             setErrorMsg("");
         } catch (error) {
             setErrorMsg(String(error));

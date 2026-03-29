@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
-import { type Book } from "../types";
-import { get_book, update_book } from "../api";
+import { type Author, type Book } from "../types";
+import { get_author, get_book, update_book } from "../api";
 import { BooksTags } from "./booksTags";
 import { EditableText } from "../utils/editableText";
 
 export function Book() {
     let { book_id } = useParams();
     const [book, setBook] = useState<Book>();
+    const [author, setAuthor] = useState<Author>();
     const [loading, setLoading] = useState(true);
     const [bookEdited, setBookEdited] = useState(false);
 
@@ -20,6 +21,8 @@ export function Book() {
         try {
             const data = await get_book(Number(book_id));
             setBook(data);
+            const authorData = await get_author(Number(data.authorId));
+            setAuthor(authorData);
         } catch (error) {
             console.error("Failed to load book:", error);
         }
@@ -55,7 +58,9 @@ export function Book() {
             </div>
             <p>
                 Author:{" "}
-                <Link to={`/authors/${book?.authorId}`}>Nom de l'auteur</Link>
+                <Link to={`/authors/${book?.authorId}`}>
+                    {author?.firstname + " " + author?.lastname}
+                </Link>
             </p>
             <BooksTags />
         </div>
