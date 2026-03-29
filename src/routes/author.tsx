@@ -18,6 +18,12 @@ export function Author() {
         loadAuthor();
     }, [author_id, authorEdited]);
 
+    useEffect(() => {
+        if (author && authorsStorage.isFavorite(author)) {
+            authorsStorage.update(author);
+        }
+    }, [authorEdited]);
+
     async function loadAuthor() {
         setLoading(true);
         try {

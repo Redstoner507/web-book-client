@@ -39,16 +39,8 @@ export function useLocalStorage<T extends WithId>(
         setList((prev) => prev.filter((item) => item.id !== id));
     }
 
-    function update(id: number, newItem: Partial<T>) {
-        setList((prev) =>
-            prev.map((item) =>
-                item.id === id ? { ...item, ...newItem } : item,
-            ),
-        );
-    }
-
-    function replace(newList: T[]) {
-        setList(newList);
+    function update(item: T) {
+        setList((prev) => prev.map((i) => (i.id === item.id ? item : i)));
     }
 
     function clear() {
@@ -63,7 +55,6 @@ export function useLocalStorage<T extends WithId>(
         add,
         remove,
         update,
-        replace,
         clear,
     };
 }

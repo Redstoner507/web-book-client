@@ -19,6 +19,12 @@ export function Book() {
         loadBook();
     }, [book_id, bookEdited]);
 
+    useEffect(() => {
+        if (book && booksStorage.isFavorite(book)) {
+            booksStorage.update(book);
+        }
+    }, [bookEdited]);
+
     async function loadBook() {
         setLoading(true);
         try {
@@ -49,6 +55,11 @@ export function Book() {
                 <EditableText
                     value={String(book?.title)}
                     onUpdate={onUpdateTitle}
+                />{" "}
+                <Favorite
+                    item={book}
+                    toggle={booksStorage.toggle}
+                    isFavorite={booksStorage.isFavorite}
                 />
             </h2>
             <hr />
@@ -57,11 +68,6 @@ export function Book() {
                 <EditableText
                     value={String(book?.publication_year)}
                     onUpdate={onUpdatePublicationYear}
-                />{" "}
-                <Favorite
-                    item={book}
-                    toggle={booksStorage.toggle}
-                    isFavorite={booksStorage.isFavorite}
                 />
             </div>
             <p>
