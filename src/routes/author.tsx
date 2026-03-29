@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { type Author } from "../types";
-import { get_author } from "../api";
+import { get_author, update_author } from "../api";
 import { AuthorBooks } from "./authorBooks";
+import { EditableText } from "../utils/editableText";
 
 export function Author() {
     let { author_id } = useParams();
     const [author, setAuthor] = useState<Author>();
     const [loading, setLoading] = useState(true);
+    const [authorEdited, setAuthorEdited] = useState(false);
 
     useEffect(() => {
         loadAuthor();
-    }, [author_id]);
+    }, [author_id, authorEdited]);
 
     async function loadAuthor() {
         setLoading(true);
@@ -21,13 +23,35 @@ export function Author() {
         } catch (error) {
             console.error("Failed to load authors:", error);
         }
+        setAuthorEdited(false);
         setLoading(false);
+    }
+
+    async function onUpdateFirstname(value: string) {
+        await update_author(Number(author_id), {
+            firstname: value,
+        });
+        setAuthorEdited(true);
+    }
+
+    async function onUpdateLastname(value: string) {
+        await update_author(Number(author_id), {
+            lastname: value,
+        });
+        setAuthorEdited(true);
     }
 
     return (
         <div style={{ opacity: loading ? "0.5" : "1" }}>
             <h2>
-                {author?.firstname} {author?.lastname}
+                <EditableText
+                    value={author?.firstname}
+                    onUpdate={onUpdateFirstname}
+                />{" "}
+                <EditableText
+                    value={author?.lastname}
+                    onUpdate={onUpdateLastname}
+                />
             </h2>
             <hr />
             <AuthorBooks />

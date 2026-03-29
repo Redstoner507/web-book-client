@@ -1,8 +1,10 @@
 import type {
     Author,
     AuthorCreationData,
+    AuthorUpdateData,
     Book,
     BookCreationData,
+    BookUpdateData,
     GetAuthorsParams,
     GetBooksParams,
     Tag,
@@ -72,6 +74,21 @@ export async function remove_author(authorId: number) {
         throw new Error(msg);
     }
     return;
+}
+
+export async function update_author(author_id: number, params: AuthorUpdateData) {
+    const res = await fetch(`${apiBasename}/authors/${author_id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+    });
+
+    if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(msg);
+    }
 }
 
 export async function get_books(title?: string, params?: GetBooksParams) {
@@ -185,6 +202,21 @@ export async function get_tags() {
 export async function add_tag_to_book(book_id: number, tag_id: number) {
     const res = await fetch(`${apiBasename}/books/${book_id}/tags/${tag_id}`, {
         method: "POST",
+    });
+
+    if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(msg);
+    }
+}
+
+export async function update_book(book_id: number, params: BookUpdateData) {
+    const res = await fetch(`${apiBasename}/books/${book_id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
     });
 
     if (!res.ok) {

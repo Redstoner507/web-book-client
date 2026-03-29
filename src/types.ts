@@ -5,7 +5,11 @@ export type Author = {
     books?: Book[];
 };
 
-export type AuthorCreationData = Partial<Omit<Author, "id">>;
+export type AuthorCreationData = Omit<Author, "id" | "books"> & {
+    books?: Book[];
+};
+
+export type AuthorUpdateData = Partial<Omit<Author, "id">>;
 
 export type GetAuthorsParams = {
     page?: number;
@@ -20,7 +24,15 @@ export type Book = {
     tags?: Tag[];
 };
 
-export type BookCreationData = Partial<Omit<Book, "id">>;
+export type BookCreationData = Omit<
+    Book,
+    "id" | "tags" | "publication_year" | "authorId"
+> & {
+    publication_year?: number;
+    tags?: Tag[];
+};
+
+export type BookUpdateData = Partial<Omit<Book, "id">>;
 
 export type GetBooksParams = {
     page?: number;

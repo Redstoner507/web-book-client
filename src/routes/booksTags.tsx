@@ -85,7 +85,11 @@ export function BooksTags() {
                 <select name="tag" id="tag">
                     <option value={0}>{"- select tag -"}</option>
                     {allTags.map((tag) => {
-                        return <option value={tag.id}>{tag.name}</option>;
+                        return (
+                            <option key={tag.id} value={tag.id}>
+                                {tag.name}
+                            </option>
+                        );
                     })}
                 </select>{" "}
                 <button>Add</button>
