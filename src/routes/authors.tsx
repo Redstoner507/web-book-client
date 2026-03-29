@@ -137,7 +137,7 @@ export function Authors() {
                         name="lastnameFilter"
                     />
 
-                    <button>Filtrer</button>
+                    <button>Filters</button>
                 </form>
                 <hr />
                 <Pagination
