@@ -6,10 +6,16 @@ export default function Root() {
             <header>
                 <ul>
                     <li>
-                        <NavLink to="/authors"> Auteurs</NavLink>
+                        <NavLink to="/"> Home</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/books"> Livre</NavLink>
+                        <NavLink to="/authors"> Authors</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/books"> Books</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/favorites"> Favorites</NavLink>
                     </li>
                 </ul>
             </header>

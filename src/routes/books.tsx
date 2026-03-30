@@ -76,7 +76,7 @@ export function Books() {
                     <label htmlFor="titleFilter">Title </label>
                     <input type="text" id="titleFilter" name="titleFilter" />
 
-                    <button>Filtrer</button>
+                    <button>Filters</button>
                 </form>
                 <hr />
 

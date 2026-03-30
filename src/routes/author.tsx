@@ -4,16 +4,25 @@ import { type Author } from "../types";
 import { get_author, update_author } from "../api";
 import { AuthorBooks } from "./authorBooks";
 import { EditableText } from "../utils/editableText";
+import { useLocalStorage } from "../favoritesStorage";
+import { Favorite } from "../utils/favorite";
 
 export function Author() {
     let { author_id } = useParams();
     const [author, setAuthor] = useState<Author>();
     const [loading, setLoading] = useState(true);
     const [authorEdited, setAuthorEdited] = useState(false);
+    const authorsStorage = useLocalStorage<Author>("authors", []);
 
     useEffect(() => {
         loadAuthor();
     }, [author_id, authorEdited]);
+
+    useEffect(() => {
+        if (author && authorsStorage.isFavorite(author)) {
+            authorsStorage.update(author);
+        }
+    }, [authorEdited]);
 
     async function loadAuthor() {
         setLoading(true);
@@ -51,6 +60,11 @@ export function Author() {
                 <EditableText
                     value={author?.lastname}
                     onUpdate={onUpdateLastname}
+                />{" "}
+                <Favorite
+                    item={author}
+                    toggle={authorsStorage.toggle}
+                    isFavorite={authorsStorage.isFavorite}
                 />
             </h2>
             <hr />

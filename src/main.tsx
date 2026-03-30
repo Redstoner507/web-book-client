@@ -6,6 +6,7 @@ import { Authors } from "./routes/authors";
 import { Books } from "./routes/books";
 import { Author } from "./routes/author";
 import { Book } from "./routes/book";
+import { Favorites } from "./routes/favorites";
 
 createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
@@ -27,6 +28,9 @@ createRoot(document.getElementById("root")!).render(
                     />
 
                     <Route path=":author_id" element={<Author />} />
+                </Route>
+                <Route path="/favorites" element={<Favorites />}>
+                    
                 </Route>
             </Route>
         </Routes>
