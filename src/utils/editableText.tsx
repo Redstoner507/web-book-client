@@ -2,7 +2,6 @@ import { Check, Pencil, X } from "lucide-react";
 import { useState, type SubmitEventHandler } from "react";
 
 const EditableTextState = {
-    // Demander car le truc du sujet marche pas
     Display: 0,
     Editing: 1,
     Saving: 2,
@@ -41,15 +40,17 @@ export function EditableText({ value, onUpdate }: EditableTextProps) {
     };
 
     return editState == EditableTextState.Display ? (
-        <>
-            <span>{value} </span>
-            <button onClick={() => setEditState(EditableTextState.Editing)}>
-                <Pencil />
-            </button>
-        </> 
+        <span style={{ display: "inline-flex" }}>
+            {value}
+            <span style={{ width: "0.5em" }}></span>
+            <Pencil
+                style={{ cursor: "pointer" }}
+                onClick={() => setEditState(EditableTextState.Editing)}
+            />
+        </span>
     ) : (
         <>
-            <form style={{ display: "inline" }} onSubmit={handleUpdate}>
+            <form style={{ display: "inline-flex" }} onSubmit={handleUpdate}>
                 <input
                     type="text"
                     name="valueInput"
@@ -59,12 +60,14 @@ export function EditableText({ value, onUpdate }: EditableTextProps) {
                 />
                 <button
                     type="submit"
+                    className="small"
                     disabled={editState === EditableTextState.Saving}
                 >
                     <Check />
                 </button>
                 <button
                     type="button"
+                    className="small"
                     onClick={() => setEditState(EditableTextState.Display)}
                     disabled={editState === EditableTextState.Saving}
                 >
