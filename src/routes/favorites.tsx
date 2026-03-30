@@ -1,6 +1,7 @@
 import { NavLink } from "react-router";
 import { useLocalStorage } from "../favoritesStorage";
 import type { Author, Book } from "../types";
+import { X } from "lucide-react";
 
 export function Favorites() {
     const authorsStorage = useLocalStorage<Author>("authors", []);
@@ -10,7 +11,16 @@ export function Favorites() {
         <div id="info">
             <h2>Your favorites</h2>
             <hr />
-            <h3>Authors</h3>
+            <h3 style={{ display: "inline-flex" }}>
+                Authors{" "}
+                <X
+                    color={"red"}
+                    fill={"red"}
+                    onClick={() => {
+                        booksStorage.clear();
+                    }}
+                />
+            </h3>
             <ul>
                 {authorsStorage.list.map((author) => {
                     return (
@@ -22,7 +32,16 @@ export function Favorites() {
                     );
                 })}
             </ul>
-            <h3>Books</h3>
+            <h3 style={{ display: "inline-flex" }}>
+                Books{" "}
+                <X
+                    color={"red"}
+                    fill={"red"}
+                    onClick={() => {
+                        booksStorage.clear();
+                    }}
+                />
+            </h3>
             <ul>
                 {booksStorage.list.map((book) => {
                     return (
