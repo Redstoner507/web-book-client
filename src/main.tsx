@@ -7,11 +7,13 @@ import { Books } from "./routes/books";
 import { Author } from "./routes/author";
 import { Book } from "./routes/book";
 import { Favorites } from "./routes/favorites";
+import { Home } from "./routes/home";
 
 createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
         <Routes>
             <Route path="/" element={<Root />}>
+                <Route path="/" element={<Home />}></Route>
                 <Route path="/books" element={<Books />}>
                     <Route
                         index
@@ -29,9 +31,7 @@ createRoot(document.getElementById("root")!).render(
 
                     <Route path=":author_id" element={<Author />} />
                 </Route>
-                <Route path="/favorites" element={<Favorites />}>
-                    
-                </Route>
+                <Route path="/favorites" element={<Favorites />}></Route>
             </Route>
         </Routes>
     </BrowserRouter>,
