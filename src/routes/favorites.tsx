@@ -17,7 +17,7 @@ export function Favorites() {
                     color={"red"}
                     fill={"red"}
                     onClick={() => {
-                        booksStorage.clear();
+                        authorsStorage.clear();
                     }}
                 />
             </h3>

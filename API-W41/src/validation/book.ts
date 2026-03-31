@@ -1,19 +1,30 @@
-import { object, string, integer, optional, size, refine, enums } from 'superstruct';
-import { isInt } from 'validator';
+import {
+    object,
+    string,
+    integer,
+    optional,
+    size,
+    refine,
+    enums,
+    union,
+    array,
+} from "superstruct";
+import { isInt } from "validator";
 
 export const BookCreationData = object({
-  title: size(string(), 1, 50),
-  publication_year: optional(integer())
+    title: size(string(), 1, 50),
+    publication_year: optional(integer()),
 });
 
 export const BookUpdateData = object({
-  title: optional(size(string(), 1, 50)),
-  publication_year: optional(integer())
+    title: optional(size(string(), 1, 50)),
+    publication_year: optional(integer()),
 });
 
 export const BookGetAllQuery = object({
-  title: optional(string()),
-  include: optional(enums(['author'])),
-  skip: optional(refine(string(), 'int', (value) => isInt(value))),
-  take: optional(refine(string(), 'int', (value) => isInt(value))),
+    title: optional(string()),
+    include: optional(enums(["author"])),
+    skip: optional(refine(string(), "int", (value) => isInt(value))),
+    take: optional(refine(string(), "int", (value) => isInt(value))),
+    tag: optional(union([string(), array(string())])),
 });
