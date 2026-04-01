@@ -91,7 +91,7 @@ export async function update_author(author_id: number, params: AuthorUpdateData)
     }
 }
 
-export async function get_books(title?: string, params?: GetBooksParams) {
+export async function get_books(title?: string, params?: GetBooksParams, tags?: Tag[]) {
     let url = `${apiBasename}/books`;
     const query = new URLSearchParams();
 
@@ -102,6 +102,12 @@ export async function get_books(title?: string, params?: GetBooksParams) {
 
         query.append("skip", String(skip));
         query.append("take", String(take));
+    }
+    
+    if(tags){
+        tags.map((tag: Tag)=>{
+            query.append("tag", tag.name);
+        })
     }
 
     url += `?${query.toString()}`;
