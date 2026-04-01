@@ -1,9 +1,9 @@
 import { useEffect, useState, type SubmitEventHandler } from "react";
 import { NavLink, Outlet } from "react-router";
 import { Pagination } from "../utils/pagination";
-//import { Loading } from "../utils/loading";
-import type { Book, GetBooksParams } from "../types";
+import type { Book, GetBooksParams, Tag } from "../types";
 import { get_books, remove_book } from "../api";
+import { BookFilter } from "../utils/bookFilter";
 
 export function Books() {
     const [books, setBooks] = useState<Book[]>([]);
@@ -12,16 +12,17 @@ export function Books() {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalElement, setTotalElement] = useState(0);
+    const [filterTags, setfilterTags] = useState<Tag[]>([]);
     const pageSize = 10;
 
     useEffect(() => {
         loadBooks({ page: currentPage, pageSize });
-    }, [valueFilter, currentPage]);
+    }, [valueFilter, currentPage, filterTags]);
 
     async function loadBooks(params?: GetBooksParams) {
         setLoading(true);
         try {
-            const data = await get_books(valueFilter, params);
+            const data = await get_books(valueFilter, params, filterTags);
             setBooks(data.books);
             setTotalElement(data.totalCount);
         } catch (error) {
@@ -53,6 +54,7 @@ export function Books() {
     };
 
     const handleFilter: SubmitEventHandler<HTMLFormElement> = (event) => {
+        console.log("Test : " + filterTags);
         // empèche le comportement par défaut du navigateur
         event.preventDefault();
         // récupération des données du formulaire
@@ -71,13 +73,11 @@ export function Books() {
     return (
         <>
             <div id="sidebar">
-                <h3>Filters</h3>
-                <form onSubmit={handleFilter}>
-                    <label htmlFor="titleFilter">Title </label>
-                    <input type="text" id="titleFilter" name="titleFilter" />
-
-                    <button>Filters</button>
-                </form>
+                <BookFilter
+                    handleFilter={handleFilter}
+                    filterTag={filterTags}
+                    setFilterTag={setfilterTags}
+                />
                 <hr />
 
                 <Pagination
