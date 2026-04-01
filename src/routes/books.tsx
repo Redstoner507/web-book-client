@@ -16,6 +16,10 @@ export function Books() {
     const pageSize = 10;
 
     useEffect(() => {
+        setCurrentPage(1);
+    }, [valueFilter, filterTags]);
+
+    useEffect(() => {
         loadBooks({ page: currentPage, pageSize });
     }, [valueFilter, currentPage, filterTags]);
 
@@ -63,7 +67,6 @@ export function Books() {
             "titleFilter",
         ) as HTMLInputElement;
         setValueFilter(searchFilter.value);
-        setCurrentPage(1);
     };
 
     const handlePageChange = (newPage: number) => {
