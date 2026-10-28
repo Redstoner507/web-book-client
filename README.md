@@ -1,73 +1,78 @@
-# React + TypeScript + Vite
+# Web Books Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Web Books Client est une application web permettant de consulter et de gérer un catalogue de livres à travers une API REST. L'interface permet de naviguer entre les auteurs et les livres, de consulter leurs détails et de gérer les associations entre les entités.
 
-Currently, two official plugins are available:
+## Fonctionnalités
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Gestion des auteurs
 
-## React Compiler
+- Affichage de la liste des auteurs.
+- Recherche d'auteurs par nom de famille.
+- Pagination de la liste, avec navigation entre les pages.
+- Ajout et suppression d'auteurs.
+- Consultation de la fiche détaillée d'un auteur.
+- Modification du nom d'un auteur.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Gestion des livres
 
-## Expanding the ESLint configuration
+- Affichage de la liste des livres avec pagination.
+- Filtrage des livres par titre.
+- Navigation vers la fiche détaillée d'un livre.
+- Consultation des informations d'un livre et accès à la fiche de son auteur.
+- Ajout, suppression et modification des livres, selon les opérations exposées par l'API.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Gestion des relations et des tags
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Affichage des livres associés à un auteur.
+- Ajout et suppression de livres associés à un auteur.
+- Affichage des tags associés à un livre.
+- Association d'un tag existant à un livre et suppression d'une association.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Interface et retours utilisateur
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Navigation entre les sections Auteurs et Livres, ainsi qu'entre les fiches détaillées.
+- Indication du chargement des données pendant les requêtes à l'API.
+- Affichage des erreurs retournées par l'API lors des opérations prises en charge.
+- Édition de texte directement depuis l'interface, avec les états d'affichage, d'édition et d'enregistrement.
+
+## Technologies
+
+- **React** et **TypeScript** pour construire l'interface.
+- **Vite** pour le serveur de développement et la construction du client.
+- **React Router** pour les routes et la navigation.
+- **Fetch API** pour communiquer avec l'API HTTP.
+- **Lucide React** pour les icônes de l'interface.
+
+## Organisation générale
+
+Le code sépare les responsabilités principales :
+
+- `src/api.ts` regroupe les fonctions d'accès à l'API.
+- `src/types.ts` définit les types utilisés par le client.
+- `src/routes/` contient les composants associés aux pages et aux routes.
+- `src/utils/pagination.tsx` contient le composant de pagination.
+- `src/utils/editableText.tsx` contient le composant de texte éditable.
+
+## Prérequis
+
+- [Bun](https://bun.sh/) installé.
+- L'API de gestion de livres disponible et démarrée séparément.
+- Une configuration CORS côté API autorisant les requêtes du client. L'API doit également exposer l'en-tête `X-Total-Count` si le client utilise cette information pour la pagination.
+
+## Installation et lancement
+
+Installez les dépendances du projet :
+
+```sh
+bun install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Configurez l'adresse de l'API dans `src/api.ts` (variable `apiBasename`) afin qu'elle corresponde à l'adresse à laquelle le serveur API est accessible.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Démarrez ensuite le serveur de développement avec le script prévu par le projet, généralement :
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+bun run dev
 ```
+
+Vite affiche l'adresse locale à ouvrir dans le navigateur.
